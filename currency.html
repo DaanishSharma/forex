@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exchange Rates</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector("form").onsubmit = function () {
+                fetch('https://open.er-api.com/v6/latest/USD')
+                    .then(response => response.json())
+                    .then(data => {
+                        const amount1 = document.querySelector("#amount1").value;
+                        const currency1 = document.querySelector("#currency1").value;
+                        const currency2 = document.querySelector("#currency2").value;
+                        // c1 -> usd ->c2
+                        const rate1 = data.rates[currency1];
+                        const rate2 = data.rates[currency2];
+                        const result = rate2 * amount1/rate1;
+                        console.log(amount1);
+                        document.querySelector('#result').innerHTML = result;
+                    })
+                    .catch(error => {
+                        console.log('Error:', error);
+                    });
+                // Prevent default submission
+                return false;
+            };
+        });
+    </script>
+</head>
+<h1>Convert Currency</h1>
+<form>
+    <input id="amount1">
+    <select id="currency1">
+        <option>INR</option>
+        <option>EUR</option>
+        <option>GBP</option>
+        <option>USD</option>
+        <option>CAD</option>
+        <option>HKD</option>
+    </select>
+    <h2>To</h2>
+    <select id="currency2">
+        <option>INR</option>
+        <option>EUR</option>
+        <option>GBP</option>
+        <option>USD</option>
+        <option>CAD</option>
+        <option>HKD</option>
+    </select>
+    <button>
+        Convert
+    </button>
+</form>
+<h2 id='result'>Converted Amount Appears Here</h2>
+
+<body>
+
+</body>
+
+</html>
